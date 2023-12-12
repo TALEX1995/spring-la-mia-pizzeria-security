@@ -13,8 +13,14 @@
 </head>
 <body>
 	<div class="container d-flex align-items-center justify-content-center">
-		<a class="btn btn-primary fs-1" href="/pizzas">Pizze</a>
-		<a class="btn btn-primary ms-5 fs-1" href="/ingredients">Ingredienti</a>
+		<div sec:authorize="isAuthenticated()">
+			<a class="btn btn-primary fs-1" href="/logout">Logout</a>
+		</div>
+		<div sec:authorize="isAnonymous()">
+			<a class="btn btn-primary fs-1" href="/login">Login</a>
+		</div>
+		<a class="btn btn-secondary  mx-5 fs-1" href="/pizzas">Pizze</a>
+		<a class="btn btn-secondary fs-1" href="/ingredients">Ingredienti</a>
 	</div>
 </body>
 </html>

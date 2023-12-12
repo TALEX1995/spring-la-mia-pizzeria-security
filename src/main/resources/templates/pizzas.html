@@ -9,13 +9,20 @@
 </head>
 
 <body>
+	<div class="container d-flex justify-content-end mt-3 align-items-center" sec:authorize="isAuthenticated()">
+		<span>Sei autenticato come: </span> <span sec:authentication="name"></span>
+			<a class="btn btn-primary ms-3" href="/logout">Logout</a>
+	</div>
+	<div class="container d-flex justify-content-end mt-3 align-items-center" sec:authorize="isAnonymous()">
+			<a class="btn btn-primary" href="/login">Login</a>
+	</div>
 	<div class="container mt-5">
 		<form>
 			<div class="input-group mb-3 d-flex align-items-center">
 				<label for="search">Cerca in base al nome della tua pizza</label>
 				<input id="search" type="text" class="form-control mx-3" name="pizzaName"
 					aria-describedby="basic-addon1" placeholder="Inserisci il nome della pizza" th:value="${pizzaName}">
-				<input class="btn btn-primary" type="submit" value="SEARCH" > 	
+				<input class="btn btn-primary" type="submit" value="SEARCH" > 
 			</div>
 		</form>
 		<div th:if="${pizzas.empty}">Non ci sono pizze</div>
@@ -40,6 +47,7 @@
 						<a class="btn btn-secondary" th:href="@{/pizzas/edit/{id} (id=${pizza.id})}">Modifica</a>
 						<a class="btn btn-primary" th:href="@{/pizzas/{id}(id=${pizza.id})}">Dettaglio</a>
 						<form th:action="@{/pizzas/delete/{id} (id=${pizza.id})}" method="POST">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 							<button type="submit" class="btn btn-primary">Elimina</button>
 						</form>
 					</td>			

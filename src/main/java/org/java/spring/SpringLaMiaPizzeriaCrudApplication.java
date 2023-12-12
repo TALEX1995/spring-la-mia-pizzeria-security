@@ -3,6 +3,11 @@ package org.java.spring;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.java.spring.auth.conf.AuthConf;
+import org.java.spring.auth.db.pojo.Role;
+import org.java.spring.auth.db.pojo.User;
+import org.java.spring.auth.db.serv.RoleService;
+import org.java.spring.auth.db.serv.UserService;
 import org.java.spring.db.serv.IngredientService;
 import org.java.spring.db.serv.PizzaService;
 import org.java.spring.db.serv.SpecialOfferService;
@@ -27,6 +32,12 @@ public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner {
 	@Autowired
 	private IngredientService ingredientService;
 	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private UserService userService;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		
@@ -50,7 +61,20 @@ public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner {
 		
 		specialOfferService.save(new SpecialOffer(LocalDate.now(), LocalDate.now().plusDays(3), "Speciale Offerta Natale", pizzas.get(0)));
 		specialOfferService.save(new SpecialOffer(LocalDate.now().plusDays(5), LocalDate.now().plusDays(8), "Speciale Offerta 20 anni Attività", pizzas.get(1)));
-	
+		
+		Role roleUser = new Role("USER");
+		Role roleAdmin = new Role("ADMIN");
+		
+		roleService.save(roleUser);
+		roleService.save(roleAdmin);
+		
+		String pass = AuthConf.passwordEncoder().encode("password");
+		
+		User alexUser = new User("alexUser", pass, roleUser);
+		User alexAdmin = new User("alexAdmin", pass, roleAdmin);
+		
+		userService.save(alexUser);
+		userService.save(alexAdmin);
 	}
 	
 	
